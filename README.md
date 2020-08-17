@@ -18,7 +18,7 @@ To install the C++ script
 
 	%  g++ -std=c++11 -o process_signatures process_signatures.cpp
 
-The python function is actually installed by copying
+The python function (TBD) is actually installed by copying
 in the [clio_toplevel](https://github.com/janelia-flyem/clio_toplevel)
 google cloud function deployment.
 
