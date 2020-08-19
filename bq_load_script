@@ -1,0 +1,18 @@
+# make sure bq is installed and run bq once to setup the project
+
+# usage: ./bg_load_script <dataset> <storage bucket for csvs>
+
+# make dataset
+#bq mk ${1}_imgsearch
+
+# make tables
+#bq --dataset_id=${1}_imgsearch mk --require_partition_filter --range_partitioning=part,0,4000,1 ${1}_imgsearch.hamming0 "part:integer,signature:integer,x:integer,y:integer,z:integer"
+#bq --dataset_id=${1}_imgsearch mk --require_partition_filter --range_partitioning=part,0,4000,1 ${1}_imgsearch.hamming1 "part:integer,signature:integer,x:integer,y:integer,z:integer"
+#bq --dataset_id=${1}_imgsearch mk --require_partition_filter --range_partitioning=part,0,4000,1 ${1}_imgsearch.hamming2 "part:integer,signature:integer,x:integer,y:integer,z:integer"
+#bq --dataset_id=${1}_imgsearch mk --require_partition_filter --range_partitioning=part,0,4000,1 ${1}_imgsearch.hamming3 "part:integer,signature:integer,x:integer,y:integer,z:integer"
+
+
+bq load --source_format=CSV ${1}_imgsearch.hamming0 gs://${2}/hamming0/sigs_*
+bq load --source_format=CSV ${1}_imgsearch.hamming1 gs://${2}/hamming1/sigs_*
+bq load --source_format=CSV ${1}_imgsearch.hamming2 gs://${2}/hamming2/sigs_*
+bq load --source_format=CSV ${1}_imgsearch.hamming3 gs://${2}/hamming3/sigs_*

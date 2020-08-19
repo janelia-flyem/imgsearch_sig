@@ -45,7 +45,12 @@ a directory named after the corresponding dataset.
 
 The /hamming_[0123] tables should be loaded as separate tables in a BigQuery
 dataset named "DATASET_imgsearch".  The first field of the CSVs is the partition
-id, which should be used to boost the performance of searches in BigQuery.
+id, which should be used to boost the performance of searches in BigQuery (schema:
+part, signature, x, y, z).  There is a script that will load these
+tables available at "bq_load_script".  There is also examples for querying
+the data in "function.py".  To use this SIG_BUCKET variable should be set
+to the location of the signature bucket and GOOGLE_APPLICATION_CREDENTIALS
+must be set accordingly. 
 
 ## TODO
 

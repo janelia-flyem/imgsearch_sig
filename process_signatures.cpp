@@ -146,10 +146,9 @@ int main(int argc, char** argv) {
 
 	string outdir("data_out");
 
-	// ?! fix num_entries bug
 	// write out a CSV table for each hamming bin
 	for (int mask = 0; mask < num_masks; ++mask) {
-		string prefix = outdir + "/hamming_" + std::to_string(mask) + "/"; 
+		string prefix = outdir + "/hamming" + std::to_string(mask) + "/"; 
 		vector<int> sig_collisions(PARTITIONS);
 
 		int num_entries = 0;
@@ -157,6 +156,7 @@ int main(int argc, char** argv) {
 		string mkdir_command = string("mkdir -p ") + prefix;
 		std::system(mkdir_command.c_str()); 
 		ofstream fout(prefix + "sigs_" + std::to_string(num_entries / MAX_ENTRIES) );
+		//fout << "part,signature,x,y,z\n";
 
 		for (auto iter = signatures.begin(); iter != signatures.end(); ++iter) {
 			size_t total_sigs = iter->second.size();
@@ -166,20 +166,21 @@ int main(int argc, char** argv) {
 			}
 
 			// write csv row
-			size_t partition_id = murmur64(iter->first) % PARTITIONS;
+			size_t partition_id = murmur64(iter->first & sig_hash_masks[mask]) % PARTITIONS;
 			
 			for (int i = 0; i < total_sigs; ++i) {
 				++num_entries;
 				sig_collisions[partition_id] += 1; 
 
 				Point3D_t xyz = iter->second[i];
-				fout << partition_id  << "," << iter->first << ",";
+				fout << partition_id  << "," << int64_t(iter->first) << ",";
 				fout << xyz[0] << "," << xyz[1] << "," << xyz[2] << "\n";
 				
 				// split into multiple files	
 				if ((num_entries % MAX_ENTRIES) == 0) {
 						fout.close();
 						fout.open(prefix + "sigs_" + std::to_string(num_entries / MAX_ENTRIES) );
+						//fout << "part,signature,x,y,z\n";
 				}
 			} 
 		
