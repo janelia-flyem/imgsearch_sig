@@ -67,7 +67,9 @@ def fetch_signature(dataset, x, y, z):
             if dist <= MAX_DISTANCE and dist < closest_dist:
                 closest_dist = dist
                 closest_point = [xt,yt,zt]
-                closest_sig = int.from_bytes(blockbin[start:(start+8)], "little") - 2**64 # make signed int
+                #print(int.from_bytes(blockbin[start:(start+8)], "little"))
+                #closest_sig = int.from_bytes(blockbin[start:(start+8)], "little") - 2**64 # make signed int
+                closest_sig = int.from_bytes(blockbin[start:(start+8)], "little", signed=True) # make signed int
         if closest_dist > MAX_DISTANCE:
             raise Exception("point not found")
     except Exception:
@@ -174,7 +176,9 @@ def getMatches(roles, dataset, point):
 """
 
 #print(fetch_signature("mb20", 18416,16369,26467)) 
+#print(fetch_signature("mb20", 24683, 15887, 16976)) 
 #print(find_similar_signatures("mb20", 18416,16369,26467))
+print(find_similar_signatures("mb20", 24683, 15887, 16976))
 
 
 
