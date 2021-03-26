@@ -36,7 +36,9 @@ and are saved into the same hash bin.  The super block size
 is the block size used to group x,y,z signatures into the same file.  One
 should choose a block size that groups at least 1000 coordinates together.
 Grouping too many coordinates together will lead to decreased performance
-for x,y,z lookups.
+for x,y,z lookups.  For example, if the data was generated with a pixel
+stride of 16, then a block width of 160 would include 10 strides, and
+therefore each block will contain 10^3 = 1000 coordinates.  (See example below.)
 
 The result of this program is a set of files saved in 'data_out'.  This
 directory should be copied into a Google storage bucket
@@ -51,6 +53,24 @@ tables available at "bq_load_script".  There is also examples for querying
 the data in "function.py".  To use this SIG_BUCKET variable should be set
 to the location of the signature bucket and GOOGLE_APPLICATION_CREDENTIALS
 must be set accordingly. 
+
+## Example commands
+
+```bash
+# If necessary, concatenate all input files into a single file.
+cat $(find /nrs/flyem/huangg/unsup_qbe/cosem/feats/ -name '*.bin') > jrc_mus_pancreas_1.bin
+
+# Process using guidelines explained above
+./process_signatures jrc_mus_pancreas_1.bin 100 160
+
+# Copy to the correct gbucket for your Clio setup,
+# as determined by `SIG_BUCKET`.
+# See https://github.com/janelia-flyem/clio_toplevel
+gsutil -m cp -R jrc_mus_pancreas_1 gs://clio_private_signatures/
+
+# This command will load data from the gbucket into BigQuery
+./bq_load_script jrc_mus_pancreas_1 clio_private_signatures/jrc_mus_pancreas_1
+```
 
 ## TODO
 

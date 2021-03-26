@@ -1,6 +1,15 @@
+#!/bin/bash
+
 # make sure bq is installed and run bq once to setup the project
 
-# usage: ./bg_load_script <dataset> <storage bucket for csvs>
+# usage:
+#
+#   ./bg_load_script <dataset> <storage bucket for csvs>
+#
+# example:
+#
+#   ./bq_load_script jrc_mus_pancreas_1 clio_private_signatures/jrc_mus_pancreas_1
+#
 
 # make dataset
 bq mk ${1}_imgsearch
