@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <random> 
 #include <numeric>
+#include <cassert>
 
 using std::unordered_map; using std::vector; using std::hash; using std::array; using std::unordered_set;
 using std::cout; using std::endl; using std::ifstream; using std::stringstream; using std::ofstream;
