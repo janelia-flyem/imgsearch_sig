@@ -61,11 +61,17 @@ must be set accordingly.
 cat $(find /nrs/flyem/huangg/unsup_qbe/cosem/feats/ -name '*.bin') > jrc_mus_pancreas_1.bin
 
 # Process using guidelines explained above
+# Note:
+#   Processing the MANC (a 30TB volume) via a single file
+#   like this took 9 hours and consumed 650GB RAM.
+#   (And for some unknown reason it seemed to hang at end instead of exiting.)
+#   This won't be a feasible method for brain-sized volumes.
 ./process_signatures jrc_mus_pancreas_1.bin 100 160
 
 # Copy to the correct gbucket for your Clio setup,
 # as determined by `SIG_BUCKET`.
 # See https://github.com/janelia-flyem/clio_toplevel
+mv data_out jrc_mus_pancreas_1
 gsutil -m cp -R jrc_mus_pancreas_1 gs://clio_private_signatures/
 
 # This command will load data from the gbucket into BigQuery
